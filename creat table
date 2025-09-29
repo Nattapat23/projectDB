@@ -1,0 +1,18 @@
+CREATE TABLE Luminix.accounts(
+	account_id CHAR(36) DEFAULT (UUID()),
+    userName VARCHAR(255) NOT NULL ,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (account_id)
+);
+
+CREATE TABLE Luminix.profile(
+    account_id VARCHAR(255) NOT NULL, 
+    profile_number INT(5) NOT NULL,
+    profile_name VARCHAR(255) NOT NULL,
+    age_rating VARCHAR(5) ,
+    PRIMARY KEY (account_id,profile_number),
+    FOREIGN KEY (account_id) REFERENCES accounts(account_id)
+)
