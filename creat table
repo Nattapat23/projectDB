@@ -8,11 +8,40 @@ CREATE TABLE Luminix.accounts(
     PRIMARY KEY (account_id)
 );
 
-CREATE TABLE Luminix.profile(
+CREATE TABLE Luminix.profiles(
     account_id VARCHAR(255) NOT NULL, 
     profile_number INT(5) NOT NULL,
     profile_name VARCHAR(255) NOT NULL,
     age_rating VARCHAR(5) ,
     PRIMARY KEY (account_id,profile_number),
     FOREIGN KEY (account_id) REFERENCES accounts(account_id)
-)
+);
+CREATE TABLE Luminix.subscriptionPlan(
+	subplan_type CHAR(1) NOT NULL,
+    planName VARCHAR(255) NOT NULL ,
+    price INT NOT NULL,
+    streamsLimit INT NOT NULL,
+    PRIMARY KEY (subplan_type)
+);
+
+CREATE TABLE Luminix.payments(
+	account_id CHAR(36) DEFAULT (UUID()),
+    checkNumber VARCHAR(50) NOT NULL,
+	amount INT NOT NULL,
+	subplan_type CHAR(1) NOT NULL,
+    paymentDate DATE,
+    PRIMARY KEY (account_id,checkNumber),
+    FOREIGN KEY (account_id) REFERENCES accounts(account_id),
+	FOREIGN KEY (subplan_type) REFERENCES subscriptionPlan(subplan_type)
+);
+
+CREATE TABLE Luminix.subscription(
+	account_id CHAR(36) DEFAULT (UUID()),
+	subplan_type CHAR(1) NOT NULL,
+    planName VARCHAR(255) NOT NULL ,
+    startDate DATE,
+    endDate DATE,
+    PRIMARY KEY (account_id,subplan_type),
+	FOREIGN KEY (account_id) REFERENCES accounts(account_id),
+	FOREIGN KEY (subplan_type) REFERENCES subscriptionPlan(subplan_type)
+);
